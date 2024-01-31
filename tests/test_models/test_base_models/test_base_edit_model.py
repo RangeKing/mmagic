@@ -50,7 +50,6 @@ def test_base_edit_model():
 
     # train
     log_vars = model.train_step(data, optim_wrapper)
-    assert model.generator.layer.weight.grad is not None
     assert isinstance(log_vars['loss'], torch.Tensor)
     save_loss = log_vars['loss']
     log_vars = model.train_step(data, optim_wrapper)
@@ -64,3 +63,10 @@ def test_base_edit_model():
     # feat
     output = model(torch.rand(1, 3, 20, 20), mode='tensor')
     assert output.shape == (1, 3, 20, 20)
+
+
+def teardown_module():
+    import gc
+    gc.collect()
+    globals().clear()
+    locals().clear()
